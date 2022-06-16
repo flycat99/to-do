@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+       <link rel="stylesheet" type="text/css" href="new.css">
+    </head>
+ <body onload="addtoweb">
+    <nav>
+        <h1 style="text-align:center; font-family:'Times New Roman', serif; font-size:27;">MANAGE YOUR TASKS</h1>
+    </nav>
+      <p>add your tasks <br>here</p>
+        <div>
+            <input type="text" placeholder="newtask" name="neww" id='name' required />
+            <input type="submit" name="addTask" value="+" id="add" onclick="addtoweb()" >  
+          </div> 
+          
+        <div id="demo"></div>
+             <form action="done.php" method="POST">
+                <input type="hidden" name="completedtask">
+                <input type="hidden" name="completedtaskid" >
+                <input type="submit" title="complete" name="complete"class="btn btn-info" 
+                value="done" onclick="fetchcomplete()" id="c" >
+               
+             </form>
+             <form action="pending.php" method="POST">
+               
+                <input type="hidden" name="completedtas">
+                <input type="hidden" name="completedtaski">
+                <input type="submit" title="not done" name="incomplete"class="btn btn-info" 
+                value="notdone" onclick="fetchincomplete()" id="i">
+             </form>
+         
+       
+       
+ </body>
+     <script>
+        function addtoweb(){
+            var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                myObj = JSON.parse(this.responseText);
+            let text = "<table border='1'>"
+            for (let x in myObj) {
+                text += "<tr><td>" + myObj[x].mytask + "</td></tr>";
+
+            }
+            text += "</table>"
+            document.getElementById("demo").innerHTML = text;
+            };
+
+            }
+            xhttp.open("POST", "mytask.php");
+            xhttp.send();
+        }
+
+        
+      function fetchcomplete(){
+            var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                myObj = JSON.parse(this.responseText);
+            let text = "<table border='1'>"
+            for (let x in myObj) {
+                text += "<tr><td>" + myObj[x].done + "</td></tr>";
+            }
+            text += "</table>"
+            document.getElementById("demo").innerHTML = text;
+            };
+         
+            }
+            xhttp.open("GET", "mytask.php");
+            xhttp.send();
+                
+        }
+
+        
+        function fetchincomplete(){
+            var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                myObj = JSON.parse(this.responseText);
+            let text = "<table border='1'>"
+            for (let x in myObj) {
+                text += "<tr><td>" + myObj[x].pending + "</td></tr>";
+            }
+            text += "</table>"
+            document.getElementById("demo").innerHTML = text;
+            };
+
+            }
+            xhttp.open("GET", "pending.php");
+            xhttp.send();
+        }
+       
+
+
+
+
+
+
+
+    </script>
+</html>  
